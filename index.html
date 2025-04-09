@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Manutenção de Ar Condicionado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calendar-alt"></i> Agenda de Serviços</h1>
+            <div class="header-controls">
+                <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                <h2 id="current-month">Abril 2023</h2>
+                <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                <button id="add-appointment"><i class="fas fa-plus"></i> Novo Agendamento</button>
+            </div>
+        </header>
+
+        <div class="calendar">
+            <div class="weekdays">
+                <div>Dom</div>
+                <div>Seg</div>
+                <div>Ter</div>
+                <div>Qua</div>
+                <div>Qui</div>
+                <div>Sex</div>
+                <div>Sáb</div>
+            </div>
+            <div class="days" id="calendar-days"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Agendamento -->
+    <div class="modal" id="appointment-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-tools"></i> Novo Agendamento</h2>
+            <form id="appointment-form">
+                <div class="form-group">
+                    <label for="client-name">Nome do Cliente:</label>
+                    <input type="text" id="client-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="service-type">Tipo de Serviço:</label>
+                    <select id="service-type" required>
+                        <option value="">Selecione...</option>
+                        <option value="Manutenção_Preventiva">Manutenção Preventiva</option>
+                        <option value="Vazamento_Gas">Vazamento de Gás</option>
+                        <option value="Instalacao">Instalação</option>
+                        <option value="Limpeza">Limpeza Completa</option>
+                        <option value="Limpeza_Parcial">Limpeza Parcial</option>                   
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="residence-type">Tipo de Residência:</label>
+                    <select id="residence-type" required>
+                        <option value="">Selecione...</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Apartamento">Apartamento</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-date">Data:</label>
+                    <input type="date" id="appointment-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="appointment-time">Horário:</label>
+                    <input type="time" id="appointment-time" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-phone">Telefone:</label>
+                    <input type="tel" id="client-phone" placeholder="(00) 00000-0000">
+                </div>
+                <div class="form-group">
+                    <label for="client-address">Endereço:</label>
+                    <textarea id="client-address" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Observações:</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-appointment">Cancelar</button>
+                    <button type="submit" id="save-appointment">Salvar Agendamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div class="modal" id="details-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-info-circle"></i> Detalhes do Agendamento</h2>
+            <div id="appointment-details">
+                <p><strong>Cliente:</strong> <span id="detail-client"></span></p>
+                <p><strong>Serviço:</strong> <span id="detail-service"></span></p>
+                <p><strong>Residência:</strong> <span id="detail-residence"></span></p>
+                <p><strong>Data:</strong> <span id="detail-date"></span></p>
+                <p><strong>Horário:</strong> <span id="detail-time"></span></p>
+                <p><strong>Telefone:</strong> <span id="detail-phone"></span></p>
+                <p><strong>Endereço:</strong> <span id="detail-address"></span></p>
+                <p><strong>Observações:</strong> <span id="detail-notes"></span></p>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="edit-appointment"><i class="fas fa-edit"></i> Editar</button>
+                <button type="button" id="delete-appointment"><i class="fas fa-trash"></i> Excluir</button>
+                <button type="button" id="close-details">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
