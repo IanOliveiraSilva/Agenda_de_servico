@@ -3,112 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda - Manutenção de Ar Condicionado</title>
+    <title>Agenda de Serviços</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-calendar-alt"></i> Agenda de Serviços</h1>
-            <div class="header-controls">
-                <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
-                <h2 id="current-month">Abril 2023</h2>
-                <button id="next-month"><i class="fas fa-chevron-right"></i></button>
-                <button id="add-appointment"><i class="fas fa-plus"></i> Novo Agendamento</button>
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-snowflake"></i>
+                <span>CrisSolar</span>
             </div>
-        </header>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-calendar-alt"></i> Agenda</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Clientes</a></li>
+                    <li><a href="#"><i class="fas fa-chart-line"></i> Relatórios</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-info">
+                    <span class="user-name">Ivanildo Ferreira</span>
+                    <span class="user-role">Técnico de Ar Condicionado</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </aside>
 
-        <div class="calendar">
-            <div class="weekdays">
-                <div>Dom</div>
-                <div>Seg</div>
-                <div>Ter</div>
-                <div>Qua</div>
-                <div>Qui</div>
-                <div>Sex</div>
-                <div>Sáb</div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h2 id="current-month">AGENDA DE SERVIÇOS</h2>
+                <div class="header-left">
+                    <div class="date-navigation">
+                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <h2 id="current-month">Abril 2023</h2>
+                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Pesquisar agendamentos...">
+                    </div>
+                    <button id="add-appointment" class="btn-primary">
+                        <i class="fas fa-plus"></i> Novo Agendamento
+                    </button>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Calendar Grid -->
+            <div class="calendar">
+                <div class="weekdays">
+                    <div>Dom</div>
+                    <div>Seg</div>
+                    <div>Ter</div>
+                    <div>Qua</div>
+                    <div>Qui</div>
+                    <div>Sex</div>
+                    <div>Sáb</div>
+                </div>
+                <div class="days" id="calendar-days"></div>
             </div>
-            <div class="days" id="calendar-days"></div>
-        </div>
+
+            <!-- Quick Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-appointments">12</span>
+                        <span class="stat-label">Agendamentos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="completed-appointments">8</span>
+                        <span class="stat-label">Concluídos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="pending-appointments">4</span>
+                        <span class="stat-label">Pendentes</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="urgent-appointments">2</span>
+                        <span class="stat-label">Urgentes</span>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Modal de Agendamento -->
+    <!-- Appointment Modal -->
     <div class="modal" id="appointment-modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2><i class="fas fa-tools"></i> Novo Agendamento</h2>
+            <div class="modal-header">
+                <h2><i class="fas fa-tools"></i> Novo Agendamento</h2>
+                <div class="service-icon" id="service-icon-preview">
+                    <i class="fas fa-tools"></i>
+                </div>
+            </div>
             <form id="appointment-form">
-                <div class="form-group">
-                    <label for="client-name">Nome do Cliente:</label>
-                    <input type="text" id="client-name" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="client-name">Nome do Cliente</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="client-name" required placeholder="Digite o nome completo">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="client-phone">Telefone</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="client-phone" placeholder="(00) 00000-0000">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="service-type">Tipo de Serviço:</label>
-                    <select id="service-type" required>
-                        <option value="">Selecione...</option>
-                        <option value="Manutenção_Preventiva">Manutenção Preventiva</option>
-                        <option value="Vazamento_Gas">Vazamento de Gás</option>
-                        <option value="Instalacao">Instalação</option>
-                        <option value="Limpeza">Limpeza Completa</option>
-                        <option value="Limpeza_Parcial">Limpeza Parcial</option>                   
-                    </select>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service-type">Tipo de Serviço</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-tools"></i>
+                            <select id="service-type" required>
+                                <option value="">Selecione...</option>
+                                <option value="Manutenção_Preventiva">Manutenção Preventiva</option>
+                                <option value="Vazamento_Gas">Vazamento de Gás</option>
+                                <option value="Instalacao">Instalação</option>
+                                <option value="Limpeza">Limpeza Completa</option>
+                                <option value="Limpeza_Parcial">Limpeza Parcial</option>                   
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="residence-type">Tipo de Residência</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-home"></i>
+                            <select id="residence-type" required>
+                                <option value="">Selecione...</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Apartamento">Apartamento</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="residence-type">Tipo de Residência:</label>
-                    <select id="residence-type" required>
-                        <option value="">Selecione...</option>
-                        <option value="Casa">Casa</option>
-                        <option value="Apartamento">Apartamento</option>
-                    </select>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointment-date">Data</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-calendar-day"></i>
+                            <input type="date" id="appointment-date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointment-time">Horário</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-clock"></i>
+                            <input type="time" id="appointment-time" required>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="appointment-date">Data:</label>
-                    <input type="date" id="appointment-date" required>
+                    <label for="client-address">Endereço</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <textarea id="client-address" rows="2" placeholder="Digite o endereço completo"></textarea>
+                    </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="appointment-time">Horário:</label>
-                    <input type="time" id="appointment-time" required>
+                    <label for="notes">Observações</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-sticky-note"></i>
+                        <textarea id="notes" rows="3" placeholder="Adicione observações importantes"></textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="client-phone">Telefone:</label>
-                    <input type="tel" id="client-phone" placeholder="(00) 00000-0000">
-                </div>
-                <div class="form-group">
-                    <label for="client-address">Endereço:</label>
-                    <textarea id="client-address" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="notes">Observações:</label>
-                    <textarea id="notes" rows="3"></textarea>
-                </div>
+
                 <div class="form-actions">
-                    <button type="button" id="cancel-appointment">Cancelar</button>
-                    <button type="submit" id="save-appointment">Salvar Agendamento</button>
+                    <button type="button" id="cancel-appointment" class="btn-secondary">Cancelar</button>
+                    <button type="submit" id="save-appointment" class="btn-primary">Salvar Agendamento</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal de Detalhes -->
+    <!-- Appointment Details Modal -->
     <div class="modal" id="details-modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2><i class="fas fa-info-circle"></i> Detalhes do Agendamento</h2>
-            <div id="appointment-details">
-                <p><strong>Cliente:</strong> <span id="detail-client"></span></p>
-                <p><strong>Serviço:</strong> <span id="detail-service"></span></p>
-                <p><strong>Residência:</strong> <span id="detail-residence"></span></p>
-                <p><strong>Data:</strong> <span id="detail-date"></span></p>
-                <p><strong>Horário:</strong> <span id="detail-time"></span></p>
-                <p><strong>Telefone:</strong> <span id="detail-phone"></span></p>
-                <p><strong>Endereço:</strong> <span id="detail-address"></span></p>
-                <p><strong>Observações:</strong> <span id="detail-notes"></span></p>
+            <div class="modal-header">
+                <h2><i class="fas fa-info-circle"></i> Detalhes do Agendamento</h2>
+                <div class="service-icon" id="detail-service-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
             </div>
+            <div class="appointment-details-container">
+                <div class="detail-section">
+                    <h3>Informações do Cliente</h3>
+                    <div class="detail-item">
+                        <i class="fas fa-user"></i>
+                        <div>
+                            <span class="detail-label">Cliente</span>
+                            <span class="detail-value" id="detail-client"></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <span class="detail-label">Telefone</span>
+                            <span class="detail-value" id="detail-phone"></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <span class="detail-label">Endereço</span>
+                            <span class="detail-value" id="detail-address"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Detalhes do Serviço</h3>
+                    <div class="detail-item">
+                        <i class="fas fa-tools"></i>
+                        <div>
+                            <span class="detail-label">Serviço</span>
+                            <span class="detail-value" id="detail-service"></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-home"></i>
+                        <div>
+                            <span class="detail-label">Tipo de Residência</span>
+                            <span class="detail-value" id="detail-residence"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Data e Hora</h3>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <div>
+                            <span class="detail-label">Data</span>
+                            <span class="detail-value" id="detail-date"></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <span class="detail-label">Horário</span>
+                            <span class="detail-value" id="detail-time"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Observações</h3>
+                    <div class="detail-item full-width">
+                        <i class="fas fa-sticky-note"></i>
+                        <div>
+                            <span class="detail-value" id="detail-notes"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-actions">
-                <button type="button" id="edit-appointment"><i class="fas fa-edit"></i> Editar</button>
-                <button type="button" id="delete-appointment"><i class="fas fa-trash"></i> Excluir</button>
-                <button type="button" id="close-details">Fechar</button>
+                <button type="button" id="delete-appointment" class="btn-danger">
+                    <i class="fas fa-trash"></i> Excluir
+                </button>
+                <button type="button" id="edit-appointment" class="btn-primary">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
             </div>
         </div>
     </div>
